@@ -1,0 +1,112 @@
+############################
+# Java / Spring Boot
+############################
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.log
+*.tmp
+*.out
+
+# Spring Boot specific
+spring.log
+*.pid
+*.gz
+
+############################
+# Maven
+############################
+.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+
+############################
+# Gradle
+############################
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+gradlew
+gradlew.bat
+
+############################
+# IntelliJ IDEA
+############################
+.idea/
+*.iws
+*.ipr
+*.iml
+out/
+
+############################
+# VS Code
+############################
+.vscode/
+
+############################
+# React / Node
+############################
+frontend/node_modules/
+frontend/build/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# If React is in a folder named "client"
+client/node_modules/
+client/build/
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+
+# General Node ignores
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-store/
+
+############################
+# Docker
+############################
+docker-compose.override.yml
+docker-data/
+*.tar
+
+############################
+# Logs
+############################
+logs/
+*.log
+*.log.*
+*.err
+*.trace
+
+############################
+# OS Files
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# Environment / Secrets
+############################
+.env
+.env.*
+*.key
+*.pem
+
+############################
+# Misc
+############################
+*.swp
+*.swo
+*.bak
+*.tmp
+*.cache
