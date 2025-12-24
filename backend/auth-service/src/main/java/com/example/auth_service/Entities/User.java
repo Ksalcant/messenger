@@ -27,4 +27,17 @@ public class User {
     private String passwordHash;
 
     private Instant createdAt = Instant.now();
+
+    // --- Getters --- 
+    public UUID getId() { return id; } 
+    public String getEmail() { return email; }
+    public String getPassword(){return passwordHash;}
+     // --- Setters ---
+
+      public void setEmail(String email) { this.email = email; }
+      public void setPasswordHash(String pwd){
+        this.passwordHash = pwd;
+
+
+      }
 }
