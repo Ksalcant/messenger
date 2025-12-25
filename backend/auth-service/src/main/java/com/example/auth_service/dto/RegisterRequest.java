@@ -1,4 +1,4 @@
-package com.example.auth_service.DTOs;
+package com.example.auth_service.dto;
 
 public class RegisterRequest {
     private String email;

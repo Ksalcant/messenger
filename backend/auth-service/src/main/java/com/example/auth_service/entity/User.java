@@ -1,4 +1,4 @@
-package com.example.auth_service.Entities;
+package com.example.auth_service.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,7 +31,7 @@ public class User {
     // --- Getters --- 
     public UUID getId() { return id; } 
     public String getEmail() { return email; }
-    public String getPassword(){return passwordHash;}
+    public String getPasswordHash() {return passwordHash;}
      // --- Setters ---
 
       public void setEmail(String email) { this.email = email; }
