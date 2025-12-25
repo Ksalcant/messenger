@@ -1,4 +1,4 @@
-package com.example.auth_service.config;
+/**package com.example.auth_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,3 +22,4 @@ public class SecurityFilterConfig {
         return http.build();
     }
 }
+*/
