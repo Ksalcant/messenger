@@ -1,22 +1,28 @@
 package com.example.auth_service.security;
-
-import java.security.Key;
 import java.util.Date;
 import java.util.UUID;
-
 import javax.crypto.SecretKey;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 
 @Component
 public class JwtUtil {
-    private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
+   // private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+   
+   @Value("${jwt.secret}")
+   private String jwtSecret;
+   
+   private SecretKey key;
+   
+   @PostConstruct
+   public void init(){
+    this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    } 
+    
     public String generateToken(UUID userId){
         Date now = new Date();
 

@@ -1,9 +1,9 @@
 package com.example.auth_service.service;
 
 import com.example.auth_service.dto.LoginRequest;
-import com.example.auth_service.entity.User;
-import com.example.auth_service.repository.UserRepo;
-import com.example.auth_service.repository.UserRepo;
+import com.example.auth_service.entity.UserEntity;
+import com.example.auth_service.repository.UserRepository;
+import com.example.auth_service.repository.UserRepository;
 import com.example.auth_service.security.JwtUtil;
 
 import org.springframework.http.HttpStatus;
@@ -14,11 +14,11 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class AuthService {
 
-    private final UserRepo userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepo userRepository,
+    public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        JwtUtil jwtUtil) {
         this.userRepository = userRepository;
@@ -28,7 +28,7 @@ public class AuthService {
 
     public String login(LoginRequest request) {
 
-        User user = userRepository.findByEmail(request.getEmail())
+        UserEntity user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() ->
                 new ResponseStatusException(
                     HttpStatus.UNAUTHORIZED, "Invalid credentials"));

@@ -15,7 +15,7 @@ import java.util.UUID;
     name = "users",
     uniqueConstraints = @UniqueConstraint(columnNames="email")// unique constraint to avoid race conditions
 )
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

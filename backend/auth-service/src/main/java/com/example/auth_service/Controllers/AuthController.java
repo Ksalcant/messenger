@@ -1,9 +1,9 @@
 package com.example.auth_service.Controllers;
 import com.example.auth_service.dto.LoginRequest;
 import com.example.auth_service.dto.RegisterRequest;
-import com.example.auth_service.entity.User;
+import com.example.auth_service.entity.UserEntity;
 import com.example.auth_service.service.AuthService;
-import com.example.auth_service.repository.UserRepo;
+import com.example.auth_service.repository.UserRepository;
 import com.example.auth_service.security.JwtUtil;
 
 import org.springframework.http.HttpStatus;
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
     
-    private final UserRepo userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final AuthService authService;
 
-    public AuthController(UserRepo userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthService authService) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthService authService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
@@ -39,7 +39,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
         }
 
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setEmail(request.getEmail());
         user.setPasswordHash(
             passwordEncoder.encode(request.getPassword())
@@ -50,8 +50,11 @@ public class AuthController {
     }
 
    @PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
     String token = authService.login(request);
     return ResponseEntity.ok(Map.of("token", token));
-}
+    }
+
+
+
 }
