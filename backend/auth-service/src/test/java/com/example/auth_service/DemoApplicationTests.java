@@ -1,10 +1,10 @@
-package backend.auth_service;
+package com.example.auth_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AuthServiceApplicationTests {
+class DemoApplicationTests {
 
 	@Test
 	void contextLoads() {
