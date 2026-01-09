@@ -1,6 +1,7 @@
 
 // add package
 package backend.chat_service.config;
+import backend.chat_service.websocket.*;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;

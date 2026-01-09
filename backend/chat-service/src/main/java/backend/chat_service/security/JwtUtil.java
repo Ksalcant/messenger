@@ -30,9 +30,14 @@ public class JwtUtil{
     }
 
     public UUID extractUserId(String token){
-        String subject = ((Object) Jwts.parser())
-        .verifyWith(key).build().parseSignedClaims(token).getPayload().getSubject();
-
+       // String subject = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getSubject();
+        String subject = Jwts.parserBuilder()
+        .setSigningKey(key)
+        .build()
+        .parseClaimsJws(token)
+        .getBody()
+        .getSubject();
+        
         return UUID.fromString(subject);
     }
 }
