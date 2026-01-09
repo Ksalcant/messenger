@@ -1,4 +1,4 @@
-package backend.chat_service.Repository;
+package backend.chat_service.repository;
 import backend.chat_service.entity.MessageEntity;
 
 import java.util.List;
