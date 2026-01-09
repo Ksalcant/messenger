@@ -13,7 +13,7 @@ import jakarta.annotation.PostConstruct;
 public class JwtUtil {
    // private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
    
-   @Value("${jwt.secret}")
+   @Value("${jwt.secret}") // relaxed binding
    private String jwtSecret;
    
    private SecretKey key;

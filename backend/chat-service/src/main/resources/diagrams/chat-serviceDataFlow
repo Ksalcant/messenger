@@ -1,0 +1,95 @@
+Client
+  |
+  |  WS CONNECT: ws://localhost:8081/ws/chat?token=<JWT>
+  |  (or Authorization: Bearer <JWT>)
+  v
+┌──────────────────────────────────────────────────────────┐
+│ WebSocketConfig                                          │
+│  - registers endpoint "/ws/chat"                          │
+│  - routes connections to ChatWebSocketHandler             │
+└──────────────────────────────────────────────────────────┘
+                          |
+                          v
+┌──────────────────────────────────────────────────────────┐
+│ ChatWebSocketHandler.afterConnectionEstablished(session)  │
+│  1) extractToken(session)                                 │
+│       - from query param token=...                        │
+│       - or Authorization header                           │
+│  2) jwtUtil.extractUserId(token)                          │
+│  3) session.attributes["userId"] = userId                 │
+│  4) sessionsByUserId[userId] = session                    │
+└──────────────────────────────────────────────────────────┘
+                          |
+                          v
+┌──────────────────────────────────────────────────────────┐
+│ JwtUtil                                                   │
+│  - verifies signature & expiration                         │
+│  - parses claims                                           │
+│  - returns userId from subject ("sub")                     │
+└──────────────────────────────────────────────────────────┘
+
+Client (sender)
+  |
+  | WS TEXT MESSAGE: {"to":"<receiver>","content":"hello"}
+  v
+┌──────────────────────────────────────────────────────────┐
+│ ChatWebSocketHandler.handleTextMessage(session, message)  │
+│  1) senderId = session.attributes["userId"]               │
+│  2) parse JSON -> IncomingChatMessage(to, content)        │
+│  3) build Message entity                                  │
+│       - senderId                                          │
+│       - receiverId                                        │
+│       - content                                           │
+│       - createdAt                                         │
+│  4) messageRepository.save(message)                       │
+│  5) receiverSession = sessionsByUserId[receiverId]        │
+│  6) if receiver online -> receiverSession.sendMessage(...)│
+│  7) sender ack -> session.sendMessage({"status":"SENT"})  │
+└──────────────────────────────────────────────────────────┘
+                          |
+                          v
+┌──────────────────────────────────────────────────────────┐
+│ MessageRepository (JPA)                                   │
+│  - persists Message                                       │
+│  - returns saved Message (id populated)                   │
+└──────────────────────────────────────────────────────────┘
+                          |
+                          v
+┌──────────────────────────────────────────────────────────┐
+│ Message Entity (Database Row)                             │
+│  messages table                                           │
+│   - id                                                    │
+│   - sender_id                                             │
+│   - receiver_id                                           │
+│   - content                                               │
+│   - created_at                                            │
+└──────────────────────────────────────────────────────────┘
+                          ^
+                          |
+                  (real-time send)
+                          |
+Client (receiver) <-------+
+  |
+  | WS TEXT MESSAGE: {"from":"<sender>","content":"hello",...}
+  v
+Receiver UI updates immediately
+
+Client disconnects
+  |
+  v
+ChatWebSocketHandler.afterConnectionClosed(session)
+  |
+  | userId = session.attributes["userId"]
+  | sessionsByUserId.remove(userId)
+  v
+User considered offline (later: broadcast presence via Redis)
+
+Client
+  |
+  | POST /auth/login
+  v
+auth-service  ---> returns JWT (sub=userId)
+  |
+  | WS connect uses same JWT
+  v
+chat-service (JwtUtil validates token using shared secret)
